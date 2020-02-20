@@ -20,10 +20,6 @@ DEFAULT_CONFIG = {
         data_path = "${global:project_path}/media/data",
         app_path = "${global:project_path}/app",
     ),
-    "python": dict(
-        bin = "/usr/bin/python3",
-        pip_requirements = "${global:project_path}/requirements.txt",
-    ),
     "db": dict(
         name = "${global:project_name}_db",
         user = "${global:project_name}_user",

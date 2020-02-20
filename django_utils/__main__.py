@@ -12,7 +12,6 @@ from django_utils.logger import logger_init
 from django_utils.config import Config
 from django_utils.process import DjangoProcess
 from django_utils.server import DjangoServer
-from django_utils.virtualenv import DjangoVenv
 from django_utils.manager import DjangoManager
 from django_utils.backup_restore import DjangoBackupRestore
 
@@ -42,9 +41,6 @@ def args_parse(args_liner):
         action="store_true",
         help='Check web server status [Start if down]')
     parser.add_argument('--db-restart', action="store_true", help='Database Restart')
-
-    parser.add_argument('--virtual-env', action="store_true", help='Active Virtual ENV')
-    parser.add_argument('--new-env', action="store_true", help='New Virtual ENV')
 
     parser.add_argument('--clean-mig-file', action="store_true", help='Clean app migration files')
 
@@ -83,8 +79,7 @@ def main():
     # Config parse
     cfg = Config.build(args)
     if args.new_config_file:
-
-    # Create new config file
+        # Create new config file
         Config.write(cfg, args.new_config_file)
     if args.check:
         args.start = True
@@ -102,9 +97,6 @@ def main():
     if not re.search("-restore", args_liner):
         check_path_o_file(cfg["django"]["media_path"], 'Media', create_path=False)
 
-    if args.virtual_env:
-        # Activate VENV #
-        DjangoVenv(cfg, args.new_venv)
     # Init process info
     process = DjangoProcess(args.env)
     # Get process status
