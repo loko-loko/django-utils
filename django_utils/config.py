@@ -34,13 +34,13 @@ DEFAULT_CONFIG = {
         compression = True,
     ),
     "ssh": dict(
-        host = "@host",
+        host = "server",
         user = "root",
         port = 22,
         remote_path = "/backup/${global:project_path}",
     ),
     "s3": dict(
-        url = "@s3_endpoint",
+        url = "http://my-s3",
         bucket = "bucket_${global:project_name}",
         access_key = "@s3_access_key",
         secret_key = "@s3_secret_key",
@@ -122,5 +122,9 @@ class Config():
         """
         Write config file
         """
-        with open(file, 'w') as f:
-            config.write(f)
+        try:
+            with open(file, 'w') as f:
+                config.write(f)
+        except Exception as e:
+            print(f"<!> Writting configuration file problem: {e}")
+            exit(1)

@@ -34,7 +34,11 @@ def logger_init(args, cfg):
     # Create Log Directory if not exist
     log_path = cfg["global"]["log_path"]
     if not os.path.exists(log_path):
-        os.makedirs(log_path)
+        try:
+            os.makedirs(log_path)
+        except Exception as e:
+            print(f"<!> Log path creation problem: {e}")
+            exit(1)
     # Select log file name
     log_file = os.path.join(log_path, f'django_exec.{args.env}.log')
     # Init logger
