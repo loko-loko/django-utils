@@ -1,8 +1,8 @@
 import os
-from configparser import ConfigParser, RawConfigParser, ExtendedInterpolation
+from configparser import ConfigParser, ExtendedInterpolation
 from loguru import logger
 
-# Config default values
+# Default config values
 DEFAULT_CONFIG = {
     "global": dict(
         project_name = "django",

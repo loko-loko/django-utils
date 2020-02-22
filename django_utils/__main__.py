@@ -8,7 +8,7 @@ import sys
 import argparse
 from loguru import logger
 from django_utils.utils import *
-from django_utils.logger import logger_init
+from django_utils.logger import Logger
 from django_utils.config import Config
 from django_utils.process import DjangoProcess
 from django_utils.server import DjangoServer
@@ -85,8 +85,8 @@ def main():
         args.start = True
 
     # Init Script logger
-    log_file = logger_init(args, cfg)
-    logger.info(f'[script] o-> Start (Env:{args.env.capitalize()}) <-o')
+    log_file = Logger.build(args, cfg)
+    logger.info(f'[django utils] o-> Start (Env:{args.env.capitalize()}) <-o')
 
     # Check and Change directory to project path
     project_path = cfg["global"]["project_path"]
@@ -135,4 +135,4 @@ def main():
 
     logger.info(f"[log] file: {log_file}")
     exec_time = time.strftime("%H:%M:%S", time.gmtime((time.time() - start_time)))
-    logger.info(f"[script] o-> End ({exec_time}) <-o")
+    logger.info(f"[django utils] o-> End ({exec_time}) <-o")
