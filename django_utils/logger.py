@@ -31,13 +31,11 @@ class Filter:
 class Logger():
 
     @classmethod
-    def build(cls, args, cfg):
+    def build(cls, args, log_path):
         """
         Build logger
         """
-        # Get log file
-        log_file = cls._get_log_file(
-            cfg["global"]["log_path"], args.env)
+        log_file = None
         # Init filter
         lfilter = Filter(args)
         # Define log filter
@@ -51,6 +49,8 @@ class Logger():
             sys.stderr, level=llevel,
             filter=lfilter, format=lformat)
         if not args.no_log and not args.debug:
+            # Get log file
+            log_file = cls._get_log_file(log_path, args.env)
             # Add file logger
             try:
                 logger.add(

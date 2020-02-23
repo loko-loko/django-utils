@@ -6,7 +6,7 @@ import shutil
 import tarfile
 from random import random
 from loguru import logger
-from django_utils.utils import cmd_exec, get_f_name, restart_service, check_path_o_file
+from django_utils.utils import cmd_exec, get_f_name, restart_service, check_path_o_file, check_f_ext
 from django_utils.remote import HostRemote
 from django_utils.s3_boto import S3Client
 
@@ -59,18 +59,16 @@ class DjangoBackupRestore():
         archive = (f'{self.current_date}_{self.project_name}'
                    f'_{atype}.{self.env.lower()}')
         archive += ".tar" if atype == "media" else ".dump"
-
         if self._remote:
             return os.path.join(self.tmp_path, archive)
-        else:
-            return os.path.join(self.backup_path, archive)
+        return os.path.join(self.backup_path, archive)
 
     @staticmethod
     def _get_media_path(path):
         media_path = os.path.dirname(path)
         if media_path == path:
             logger.error(f'[media] Not find path of media: {path} |Exit|')
-        return media_path
+        return path
 
     def _send_to_remote(self, local_file):
         # Send file to s3
@@ -88,7 +86,7 @@ class DjangoBackupRestore():
         # Delete local file
         os.remove(local_file)
 
-    def _backup_media(self):
+    def backup_media(self):
         backup_file = self._get_archive_file("media")
         # Create archive with media content
         logger.info(f'[backup media] Create new archive: {backup_file}')
@@ -101,7 +99,7 @@ class DjangoBackupRestore():
             self._send_to_remote(backup_file)
         logger.info(f'[backup media] Success: {backup_file}')
 
-    def _restore_media(self, media_file):
+    def restore_media(self, media_file):
         # Check extension
         check_f_ext(media_file, '.tar(.xz)?', 'media')
         tmp_file = f'{self.tmp_path}/{self.random_id}-{get_f_name(media_file)}'
@@ -132,7 +130,7 @@ class DjangoBackupRestore():
         logger.info(f'[restore media] Delete file: {tmp_file}')
         os.remove(tmp_file)
 
-    def _backup_db(self):
+    def backup_db(self):
         backup_file = self._get_archive_file("db")
         # Create archive with media content
         logger.info(f'[backup db] Name: {self.db_name}')
@@ -147,7 +145,7 @@ class DjangoBackupRestore():
             self._send_to_remote(backup_file)
         logger.info(f'[backup db] Success: {backup_file}')
 
-    def _restore_db(self, dump_file):
+    def restore_db(self, dump_file):
         # Check extension
         check_f_ext(dump_file, '.dump(.xz)?', 'Dump')
         tmp_file = f'{self.tmp_path}/{self.random_id}-{get_f_name(dump_file)}'
@@ -184,15 +182,15 @@ class DjangoBackupRestore():
 
     def backup(self, args):
         if args.db_backup:
-            self._backup_db()
+            self.backup_db()
         if args.media_backup:
-            self._backup_media()
+            self.backup_media()
 
     def restore(self, args):
         if args.db_restore:
-            self._restore_db(args.dump_file)
+            self.restore_db(args.dump_file)
         if args.media_restore:
-            self._restore_media(args.media_file)
+            self.restore_media(args.media_file)
 
     def close(self):
         if self._ssh:

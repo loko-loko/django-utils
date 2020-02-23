@@ -85,7 +85,7 @@ def main():
         args.start = True
 
     # Init Script logger
-    log_file = Logger.build(args, cfg)
+    log_file = Logger.build(args, cfg["global"]["log_path"])
     logger.info(f'[django utils] o-> Start (Env:{args.env.capitalize()}) <-o')
 
     # Check and Change directory to project path

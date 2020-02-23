@@ -6,6 +6,7 @@ import sys
 import time
 from base64 import b64decode
 from subprocess import Popen, PIPE, STDOUT
+from pprint import pformat
 from loguru import logger
 
 # File/Path #
@@ -48,8 +49,9 @@ def cmd_exec(cmd, wait=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, cmd_return=
         stderr=stderr,
         encoding='utf-8')
     if wait and popen.wait() != 0:
-        logger.debug(f'[command] Return : {pformat(popen.stdout.readlines())}')
-        logger.error(f'[command] Problem : {cmd} |Exit|')
+        if popen.stdout:
+            logger.debug(f'[command][stdout] Return: {pformat(popen.stdout.readlines())}')
+        logger.error(f'[command] Problem: {cmd} |Exit|')
     if cmd_return:
         return popen.stdout.readlines()
 
