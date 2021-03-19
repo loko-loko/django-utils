@@ -20,7 +20,7 @@ setup(
         "cffi==1.11.5",
         "cryptography>=2.5",
         "paramiko==2.6.0",
-        "Django==2.2.13",
+        "Django==2.2.18",
         "django-ckeditor==5.6.1",
         "django-js-asset==1.1.0",
         "idna==2.8",
