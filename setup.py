@@ -19,7 +19,7 @@ setup(
         "bcrypt==3.1.5",
         "cffi==1.11.5",
         "cryptography>=2.5",
-        "paramiko==2.6.0",
+        "paramiko==2.10.1",
         "Django==2.2.13",
         "django-ckeditor==5.6.1",
         "django-js-asset==1.1.0",
