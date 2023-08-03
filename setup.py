@@ -24,7 +24,7 @@ setup(
         "django-ckeditor==5.6.1",
         "django-js-asset==1.1.0",
         "idna==2.8",
-        "loguru==0.4.0",
+        "loguru==0.5.3",
         "Pillow==6.2.0",
         "psycopg2==2.7.6.1",
         "pyasn1==0.4.4",
