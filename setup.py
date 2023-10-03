@@ -25,7 +25,7 @@ setup(
         "django-js-asset==1.1.0",
         "idna==2.8",
         "loguru==0.4.0",
-        "Pillow==6.2.0",
+        "Pillow==10.0.1",
         "psycopg2==2.7.6.1",
         "pyasn1==0.4.4",
         "pycparser==2.19",
